@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomodoro Pro</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-dot"></span>
+    Pomodoro Pro
+  </div>
+  <div class="session-badge">Sessions today: <span id="sessionCount">0</span></div>
+</header>
+
+<!-- LEFT PANEL: TIMER -->
+<main class="left-panel">
+
+  <div class="mode-tabs">
+    <button class="mode-tab active" onclick="setMode('focus', this)">Focus</button>
+    <button class="mode-tab" onclick="setMode('short', this)">Short Break</button>
+    <button class="mode-tab" onclick="setMode('long', this)">Long Break</button>
+  </div>
+
+  <div class="timer-container">
+    <svg class="timer-svg" viewBox="0 0 220 220">
+      <circle class="ring-track" cx="110" cy="110" r="95"/>
+      <circle class="ring-progress" id="progress" cx="110" cy="110" r="95"/>
+    </svg>
+    <div class="timer-inner">
+      <div class="time-display" id="time">25:00</div>
+      <div class="mode-label" id="modeLabel">Focus Time</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-secondary btn-icon" onclick="resetTimer()" title="Reset">↺</button>
+    <button class="btn btn-primary" id="startPauseBtn" onclick="toggleTimer()">Start</button>
+    <button class="btn btn-secondary btn-icon" onclick="skipSession()" title="Skip">⏭</button>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-value" id="completedStat">0</div>
+      <div class="stat-label">Completed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="minutesStat">0</div>
+      <div class="stat-label">Minutes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="streakStat">0</div>
+      <div class="stat-label">Streak</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Today's sessions</div>
+    <canvas id="chart" height="100"></canvas>
+  </div>
+
+</main>
+
+<!-- RIGHT PANEL: TASKS -->
+<aside class="right-panel">
+
+  <div class="panel-title">
+    Tasks
+    <span class="task-count" id="taskCount">0 tasks</span>
+  </div>
+
+  <div class="task-input-row">
+    <input class="task-input" id="taskInput" placeholder="Add a new task…" onkeydown="if(event.key==='Enter') addTask()">
+    <button class="btn btn-primary" onclick="addTask()" style="padding: 11px 18px; font-size: 0.75rem;">Add</button>
+  </div>
+
+  <ul class="task-list" id="taskList">
+    <li class="empty-state" id="emptyState">
+      <div class="empty-icon">📋</div>
+      No tasks yet. Add one above!
+    </li>
+  </ul>
+
+</aside>
+
+<!-- STATUS BAR -->
+<footer class="status-bar">
+  <div class="status-text">
+    <span class="status-dot" id="statusDot"></span>
+    <span id="statusText">Ready to focus</span>
+  </div>
+  <div class="status-text">Pomodoro Pro · Stay in the zone</div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<audio id="alarm">
+  <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
+</audio>
+
+<script src="script.js"></script>
+</body>
+</html>
